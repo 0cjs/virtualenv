@@ -83,6 +83,18 @@ def test_version_satisfies_ok(req, spec):
     assert sat_spec.satisfies(req_spec) is True
 
 
+@pytest.mark.parametrize('path', [
+    "/my/private/build/python3.11",
+    "relative/python3.11",
+    "python3.11",
+])
+def test_spec_from_interpreter_path(path):
+    s = PythonSpec.from_string_spec(path)
+    print(s)
+    assert (s.major, s.minor, s.micro, s.path) \
+        == (      3,      11,    None,   path)
+
+
 def _version_not_satisfies_pairs():
     target = set()
     version = tuple(str(i) for i in sys.version_info[0:3])
